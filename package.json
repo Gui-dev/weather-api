@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch -r tsconfig-paths/register 'src/server.ts'",
     "test:fuctional": "jest --projects './test' --runInBand",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:unit": "jest"
   },
   "keywords": [],
   "author": "Gui Silva",
