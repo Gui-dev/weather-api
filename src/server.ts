@@ -1,7 +1,9 @@
+import * as dotenv from 'dotenv'
 import { Server } from '@overnightjs/core'
 import express, { type Application } from 'express'
 
 import { ForecastController } from './controllers/forecast'
+dotenv.config()
 
 export class SetupServer extends Server {
   constructor(private readonly port = 3333 || process.env.PORT) {
