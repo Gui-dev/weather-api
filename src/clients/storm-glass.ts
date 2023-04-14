@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { ClientRequestError } from '@src/errors/client-request-error'
-import { type AxiosStatic } from 'axios'
+import { StormGlassResponseError } from '@src/errors/stormglass-response-error'
+import { type AxiosError, type AxiosStatic } from 'axios'
 
 type IStormGlassPointSource = Record<string, number>
 
@@ -48,7 +49,12 @@ export class StormGlass {
       )
       return this.normalizedResponse(response.data)
     } catch (err) {
-      const error = err as Error
+      const error = err as AxiosError
+      if (error.response?.status) {
+        throw new StormGlassResponseError(
+          `Error: ${JSON.stringify(error.response.data)} Code: ${error.response.status}`
+        )
+      }
       throw new ClientRequestError(error.message)
     }
   }
