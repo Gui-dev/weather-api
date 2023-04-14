@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { ClientRequestError } from '@src/errors/client-request-error'
 import { type AxiosStatic } from 'axios'
 
 type IStormGlassPointSource = Record<string, number>
@@ -36,15 +37,20 @@ export class StormGlass {
   constructor(protected request: AxiosStatic) { }
 
   public async fetchPoints (latitude: number, longitude: number): Promise<IForecastPoint[]> {
-    const response = await this.request.get<IStormGlassForecastResponse>(
-      `https://api.stormglass.io/v2/weather/point?params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}&lat=${latitude}&lng=${longitude}`,
-      {
-        headers: {
-          Authorization: process.env.STORM_GLASS_KEY
+    try {
+      const response = await this.request.get<IStormGlassForecastResponse>(
+        `https://api.stormglass.io/v2/weather/point?params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}&lat=${latitude}&lng=${longitude}`,
+        {
+          headers: {
+            Authorization: process.env.STORM_GLASS_KEY
+          }
         }
-      }
-    )
-    return this.normalizedResponse(response.data)
+      )
+      return this.normalizedResponse(response.data)
+    } catch (err) {
+      const error = err as Error
+      throw new ClientRequestError(error.message)
+    }
   }
 
   private normalizedResponse (points: IStormGlassForecastResponse): IForecastPoint[] {
