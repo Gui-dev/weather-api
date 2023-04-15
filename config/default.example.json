@@ -1,0 +1,10 @@
+{
+  "App": {
+    "resources": {
+      "StormGlass": {
+        "apiUrl": "api_url",
+        "apiToken": "fake-api-token"
+      }
+    }
+  }
+}
