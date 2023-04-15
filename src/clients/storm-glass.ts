@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { type AxiosError, type AxiosStatic } from 'axios'
+
 import { ClientRequestError } from '@src/errors/client-request-error'
 import { StormGlassResponseError } from '@src/errors/stormglass-response-error'
-import { type AxiosError, type AxiosStatic } from 'axios'
+import { stormGlassResourcesConfig } from '@src/util/stormglass-resources-config'
 
 type IStormGlassPointSource = Record<string, number>
 
@@ -40,10 +41,10 @@ export class StormGlass {
   public async fetchPoints (latitude: number, longitude: number): Promise<IForecastPoint[]> {
     try {
       const response = await this.request.get<IStormGlassForecastResponse>(
-        `https://api.stormglass.io/v2/weather/point?params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}&lat=${latitude}&lng=${longitude}`,
+        `${stormGlassResourcesConfig.get('apiUrl')}/weather/point?params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}&lat=${latitude}&lng=${longitude}`,
         {
           headers: {
-            Authorization: process.env.STORM_GLASS_KEY
+            Authorization: stormGlassResourcesConfig.get('apiToken')
           }
         }
       )
