@@ -1,8 +1,9 @@
-import { type AxiosError, type AxiosStatic } from 'axios'
+import { type AxiosError } from 'axios'
 
+import * as HTTPUtil from '@src/util/request'
 import { ClientRequestError } from '@src/errors/client-request-error'
 import { StormGlassResponseError } from '@src/errors/stormglass-response-error'
-import { stormGlassResourcesConfig } from '@src/util/stormglass-resources-config'
+import { stormGlassResourcesConfig } from '@src/config/stormglass-resources-config'
 
 type IStormGlassPointSource = Record<string, number>
 
@@ -36,7 +37,7 @@ export class StormGlass {
   private readonly stormGlassAPIParams = 'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed'
   private readonly stormGlassAPISource = 'noaa'
 
-  constructor(protected request: AxiosStatic) { }
+  constructor(protected request = new HTTPUtil.Request()) { }
 
   public async fetchPoints (latitude: number, longitude: number): Promise<IForecastPoint[]> {
     try {
