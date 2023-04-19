@@ -52,9 +52,9 @@ export class StormGlass {
       return this.normalizedResponse(response.data)
     } catch (err) {
       const error = err as AxiosError
-      if (error.response?.status) {
+      if (HTTPUtil.Request.isRequestError(error)) {
         throw new StormGlassResponseError(
-          `Error: ${JSON.stringify(error.response.data)} Code: ${error.response.status}`
+          `Error: ${JSON.stringify(error.response?.data)} Code: ${error.response?.status}`
         )
       }
       throw new ClientRequestError(error.message)
