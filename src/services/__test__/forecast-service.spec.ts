@@ -5,8 +5,10 @@ import { BeachPosition, ForecastService, type IBeach } from '../forecast-service
 jest.mock('@src/clients/storm-glass')
 
 describe('#Forecast Service', () => {
+  const mockedStormGlassService = new StormGlass() as jest.Mocked<StormGlass>
+
   it('should the forecast a list of beaches', async () => {
-    StormGlass.prototype.fetchPoints = jest.fn().mockResolvedValue(stormGlassNormalizedResponseFixture)
+    mockedStormGlassService.fetchPoints.mockResolvedValue(stormGlassNormalizedResponseFixture)
     const beaches: IBeach[] = [
       {
         name: 'Manly',
@@ -72,9 +74,16 @@ describe('#Forecast Service', () => {
         }]
       }
     ]
-    const forecast = new ForecastService(new StormGlass())
+    const forecast = new ForecastService(mockedStormGlassService)
     const beachesWithRating = await forecast.processForecastForBeaches(beaches)
 
     expect(beachesWithRating).toEqual(expectedResponse)
+  })
+
+  it('should return an empty list when the beaches array is empty', async () => {
+    const forecast = new ForecastService()
+    const response = await forecast.processForecastForBeaches([])
+
+    expect(response).toEqual([])
   })
 })
