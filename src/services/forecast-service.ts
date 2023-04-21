@@ -28,16 +28,7 @@ export class ForecastService {
     try {
       for (const beach of beaches) {
         const points = await this.stormGlass.fetchPoints(beach.latitude, beach.longitude)
-        const enrichedBeachData = points.map(point => {
-          return {
-            name: beach.name,
-            position: beach.position,
-            latitude: beach.latitude,
-            longitude: beach.longitude,
-            rating: 1,
-            ...point
-          }
-        })
+        const enrichedBeachData = this.enrichedBeachData(points, beach)
         pointsWithCorrectSources.push(...enrichedBeachData)
       }
       return this.mapForecastByTime(pointsWithCorrectSources)
@@ -45,6 +36,19 @@ export class ForecastService {
       const error = err as Error
       throw new ForecastProcessingInternalError(error.message)
     }
+  }
+
+  private enrichedBeachData (points: IForecastPoint[], beach: IBeach): IBeachForecast[] {
+    return points.map(point => {
+      return {
+        name: beach.name,
+        position: beach.position,
+        latitude: beach.latitude,
+        longitude: beach.longitude,
+        rating: 1,
+        ...point
+      }
+    })
   }
 
   private mapForecastByTime (forecast: IBeachForecast[]): ITimeForecast[] {
