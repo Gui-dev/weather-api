@@ -1,6 +1,7 @@
 import { StormGlass } from '@src/clients/storm-glass'
 import stormGlassNormalizedResponseFixture from '@test/fixtures/stormglass-normalized-3-hours.json'
 import { BeachPosition, ForecastService, type IBeach } from '../forecast-service'
+import { ForecastProcessingInternalError } from '@src/errors/forecast-processing-internal-error'
 
 jest.mock('@src/clients/storm-glass')
 
@@ -85,5 +86,23 @@ describe('#Forecast Service', () => {
     const response = await forecast.processForecastForBeaches([])
 
     expect(response).toEqual([])
+  })
+
+  it('should throw internal processing error when something goes wrong during the rating process', async () => {
+    const beaches: IBeach[] = [
+      {
+        name: 'Manly',
+        position: BeachPosition.E,
+        latitude: -33.792726,
+        longitude: 151.289824,
+        user: 'fake_id'
+      }
+    ]
+    mockedStormGlassService.fetchPoints.mockRejectedValue({ message: 'Error fetching data' })
+    const forecast = new ForecastService(mockedStormGlassService)
+
+    await expect(forecast.processForecastForBeaches(beaches)).rejects.toThrow(
+      ForecastProcessingInternalError
+    )
   })
 })
