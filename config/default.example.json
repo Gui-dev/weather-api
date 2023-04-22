@@ -1,5 +1,8 @@
 {
   "App": {
+    "database": {
+      "mongoUrl": ""
+    },
     "resources": {
       "StormGlass": {
         "apiUrl": "api_url",
