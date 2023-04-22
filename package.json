@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch -r tsconfig-paths/register 'src/server.ts'",
-    "test:fuctional": "jest --projects './test' --runInBand",
+    "test:functional": "jest --projects './test' --runInBand",
     "test:unit": "jest"
   },
   "keywords": [],

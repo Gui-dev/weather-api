@@ -1,7 +1,7 @@
 {
   "App": {
     "database": {
-      "mongoUrl": "mongodb+srv://root:root@cluster0.pknldel.mongodb.net/?retryWrites=true&w=majority"
+      "mongoUrl": "your-database-url"
     },
     "resources": {
       "StormGlass": {
