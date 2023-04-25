@@ -12,7 +12,6 @@ export interface IBeach {
   position: BeachPosition
   latitude: number
   longitude: number
-  user: string
 }
 export interface IBeachForecast extends Omit<IBeach, 'user'>, IForecastPoint { }
 export interface ITimeForecast {
