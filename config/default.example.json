@@ -1,12 +1,13 @@
 {
   "App": {
+    "port": 3333,
     "database": {
       "mongoUrl": ""
     },
     "resources": {
       "StormGlass": {
         "apiUrl": "api_url",
-        "apiToken": "fake-api-token"
+        "apiToken": "your-api-token"
       }
     }
   }
