@@ -1,18 +1,7 @@
 import { type IForecastPoint, StormGlass } from '@src/clients/storm-glass'
 import { ForecastProcessingInternalError } from '@src/errors/forecast-processing-internal-error'
+import { type IBeach } from '@src/models/beaches-model'
 
-export enum BeachPosition {
-  S = 'S',
-  E = 'E',
-  W = 'W',
-  N = 'N'
-}
-export interface IBeach {
-  name: string
-  position: BeachPosition
-  latitude: number
-  longitude: number
-}
 export interface IBeachForecast extends Omit<IBeach, 'user'>, IForecastPoint { }
 export interface ITimeForecast {
   time: string
