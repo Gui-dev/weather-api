@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "module": "es2022",
   "scripts": {
+    "start:local": "tsx watch -r tsconfig-paths/register 'src/index.ts'",
     "dev": "tsx watch -r tsconfig-paths/register 'src/server.ts'",
     "test:functional": "jest --projects './test' --runInBand",
-    "test:unit": "jest"
+    "test:unit": "jest",
+    "test": "npm run test:unit && npm run test:functional"
   },
   "keywords": [],
   "author": "Gui Silva",
