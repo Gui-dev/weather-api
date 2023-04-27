@@ -5,6 +5,7 @@ import express, { type Application } from 'express'
 import * as database from './shared/database/database'
 import { ForecastController } from './controllers/forecast'
 import { BeachesController } from './controllers/beaches'
+import { UsersController } from './controllers/users'
 dotenv.config()
 
 export class SetupServer extends Server {
@@ -43,6 +44,7 @@ export class SetupServer extends Server {
   private setupControllers (): void {
     const forecastController = new ForecastController()
     const beachesController = new BeachesController()
-    this.addControllers([forecastController, beachesController])
+    const usersController = new UsersController()
+    this.addControllers([forecastController, beachesController, usersController])
   }
 }
