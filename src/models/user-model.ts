@@ -1,5 +1,6 @@
 import { type Document, type Model, Schema, model, models } from 'mongoose'
-import bcrypt from 'bcrypt'
+
+import { AuthService } from '@src/services/auth-service'
 
 export interface IUser {
   _id?: string
@@ -37,15 +38,13 @@ schema.path('email').validate(async (email: string) => {
   return !emailCount
 }, 'already exists in the database', CUSTOM_VALIDATION.DUPLICATED)
 
-export const hashPassword = async (password: string, salt = 10): Promise<string> => {
-  const passwordHash = await bcrypt.hash(password, salt)
-  return passwordHash
-}
-
-export const comparePassword = async (password: string, passwordHashed: string): Promise<boolean> => {
-  const isValidPassword = await bcrypt.compare(password, passwordHashed)
-  return isValidPassword
-}
+schema.pre('save', async function (): Promise<void> {
+  if (!this.password || !this.isModified('password')) {
+    return
+  }
+  const hashedPassword = await AuthService.hashPassword(this.password)
+  this.password = hashedPassword
+})
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
