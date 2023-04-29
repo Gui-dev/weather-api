@@ -1,4 +1,5 @@
 import { type Document, type Model, Schema, model, models } from 'mongoose'
+import bcrypt from 'bcrypt'
 
 export interface IUser {
   _id?: string
@@ -35,6 +36,16 @@ schema.path('email').validate(async (email: string) => {
   const emailCount = await models.User.countDocuments({ email })
   return !emailCount
 }, 'already exists in the database', CUSTOM_VALIDATION.DUPLICATED)
+
+export const hashPassword = async (password: string, salt = 10): Promise<string> => {
+  const passwordHash = await bcrypt.hash(password, salt)
+  return passwordHash
+}
+
+export const comparePassword = async (password: string, passwordHashed: string): Promise<boolean> => {
+  const isValidPassword = await bcrypt.compare(password, passwordHashed)
+  return isValidPassword
+}
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
