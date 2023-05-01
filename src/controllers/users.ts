@@ -4,6 +4,7 @@ import type mongoose from 'mongoose'
 
 import { User } from '@src/models/user-model'
 import { BaseController } from '.'
+import { AuthService } from '@src/services/auth-service'
 
 @Controller('users')
 export class UsersController extends BaseController {
@@ -17,5 +18,20 @@ export class UsersController extends BaseController {
       const error = err as mongoose.Error.ValidationError | Error
       this.sendCreatedUpdateErrorResponse(response, error)
     }
+  }
+
+  @Post('authenticate')
+  public async authenticate (request: Request, response: Response): Promise<Response | any> {
+    const { email, password } = request.body
+    const user = await User.findOne({ email })
+    if (!user) {
+      return
+    }
+    if (!(await AuthService.comparePassword(password, user.password))) {
+      return
+    }
+    const token = AuthService.generateToken(user.toJSON())
+    console.log('TOKEN: ', token)
+    return response.status(200).send({ token })
   }
 }
