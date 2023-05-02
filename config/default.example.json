@@ -2,7 +2,11 @@
   "App": {
     "port": 3333,
     "database": {
-      "mongoUrl": ""
+      "mongoUrl": "your-database-url"
+    },
+    "auth": {
+      "key": "your-secret-word",
+      "tokenExpiresIn": "your-time"
     },
     "resources": {
       "StormGlass": {

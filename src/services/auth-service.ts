@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import config from 'config'
 
 export class AuthService {
   public static async hashPassword (password: string, salt = 10): Promise<string> {
@@ -13,8 +14,10 @@ export class AuthService {
   }
 
   public static generateToken (payload: Record<string, string>): string {
-    const token = jwt.sign(payload, 'secretword', {
-      expiresIn: '7d'
+    const secret: string = config.get('App.auth.key')
+    const expiresIn: string = config.get('App.auth.tokenExpiresIn')
+    const token = jwt.sign(payload, secret, {
+      expiresIn
     })
     return token
   }
