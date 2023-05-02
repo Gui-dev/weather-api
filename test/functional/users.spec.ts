@@ -81,5 +81,20 @@ describe('#Users functional tests', () => {
 
       expect(response.status).toBe(401)
     })
+
+    it('should return UNAUTHORIZED if the user is found but the password does not match', async () => {
+      const newUser = {
+        name: 'Bruce Wayne',
+        email: 'bruce@email.com',
+        password: '123456'
+      }
+      const fakePassword = 'fake_password'
+      await new User(newUser).save()
+      const response = await global.testRequest
+        .post('/users/authenticate')
+        .send({ email: newUser.email, password: fakePassword })
+
+      expect(response.status).toBe(401)
+    })
   })
 })
