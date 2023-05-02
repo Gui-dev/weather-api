@@ -69,5 +69,17 @@ describe('#Users functional tests', () => {
         expect.objectContaining({ token: expect.any(String) })
       )
     })
+
+    it('should return UNAUTHORIZED if the user with the given email is not found', async () => {
+      const loginData = {
+        email: 'fake_email',
+        password: 'fake_password'
+      }
+      const response = await global.testRequest
+        .post('/users/authenticate')
+        .send({ email: loginData.email, password: loginData.password })
+
+      expect(response.status).toBe(401)
+    })
   })
 })
