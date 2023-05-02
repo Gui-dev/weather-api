@@ -27,11 +27,14 @@ export class UsersController extends BaseController {
     if (!user) {
       return response.status(401).send({
         code: 401,
-        error: 'User not found'
+        error: 'User or password is invalid'
       })
     }
     if (!(await AuthService.comparePassword(password, user.password))) {
-      return
+      return response.status(401).send({
+        code: 401,
+        error: 'User or password is invalid'
+      })
     }
     const token = AuthService.generateToken(user.toJSON())
 
