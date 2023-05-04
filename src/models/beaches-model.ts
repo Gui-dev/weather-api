@@ -18,7 +18,8 @@ const schema = new Schema({
   name: { type: String, required: true },
   position: { type: String, required: true },
   latitude: { type: Number, required: true },
-  longitude: { type: Number, required: true }
+  longitude: { type: Number, required: true },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 }, {
   toJSON: {
     transform: (_, ret): void => {
