@@ -12,6 +12,7 @@ export interface IBeach {
   position: BeachPosition
   latitude: number
   longitude: number
+  user: string
 }
 
 const schema = new Schema({
