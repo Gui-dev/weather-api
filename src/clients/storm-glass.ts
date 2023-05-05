@@ -3,7 +3,6 @@ import { type AxiosError } from 'axios'
 import * as HTTPUtil from '@src/util/request'
 import { ClientRequestError } from '@src/errors/client-request-error'
 import { StormGlassResponseError } from '@src/errors/stormglass-response-error'
-import { stormGlassResourcesConfig } from '@src/config/stormglass-resources-config'
 
 type IStormGlassPointSource = Record<string, number>
 
@@ -42,10 +41,10 @@ export class StormGlass {
   public async fetchPoints (latitude: number, longitude: number): Promise<IForecastPoint[]> {
     try {
       const response = await this.request.get<IStormGlassForecastResponse>(
-        `${stormGlassResourcesConfig.get('apiUrl')}/weather/point?params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}&lat=${latitude}&lng=${longitude}`,
+        `${process.env.STORMGLASS_API_URL}/weather/point?params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}&lat=${latitude}&lng=${longitude}`,
         {
           headers: {
-            Authorization: stormGlassResourcesConfig.get('apiToken')
+            Authorization: process.env.STORMGLASS_API_TOKEN
           }
         }
       )

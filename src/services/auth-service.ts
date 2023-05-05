@@ -1,12 +1,12 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import config from 'config'
-
+import * as dotenv from 'dotenv'
 import { type User } from '@src/models/user-model'
 
 export interface IDecodedUser extends Omit<typeof User, '_id'> {
   id: string
 }
+dotenv.config()
 
 export class AuthService {
   public static async hashPassword (password: string, salt = 10): Promise<string> {
@@ -20,16 +20,14 @@ export class AuthService {
   }
 
   public static generateToken (payload: Record<string, string>): string {
-    const secret: string = config.get('App.auth.key')
-    const expiresIn: string = config.get('App.auth.tokenExpiresIn')
-    const token = jwt.sign(payload, secret, {
-      expiresIn
+    const token = jwt.sign(payload, process.env.AUTH_SECRET_WORD as string, {
+      expiresIn: process.env.AUTH_EXPIRES_IN as string
     })
     return token
   }
 
   public static decodeToken (token: string): IDecodedUser {
-    const secret: string = config.get('App.auth.key')
+    const secret: string = process.env.AUTH_SECRET_WORD as string
     return jwt.verify(token, secret) as IDecodedUser
   }
 }

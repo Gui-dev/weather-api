@@ -1,10 +1,7 @@
-import config, { type IConfig } from 'config'
 import mongoose, { type Mongoose } from 'mongoose'
 
-const dbConfig: IConfig = config.get('App.database')
-
 export const connect = async (): Promise<Mongoose> => {
-  return await mongoose.connect(dbConfig.get('mongoUrl'))
+  return await mongoose.connect(process.env.DATABASE_URL as string)
 }
 
 export const close = async (): Promise<void> => {
