@@ -7,6 +7,14 @@ on:
     branches:
       - main
 
+env:
+  PORT: ${{ secrets.PORT }}
+  DATABASE_URL: ${{secrets.DATABASE_URL}}
+  AUTH_SECRET_WORD: ${{secrets.AUTH_SECRET_WORD}}
+  AUTH_EXPIRES_IN: ${{secrets.AUTH_EXPIRES_IN}}
+  STORMGLASS_API_URL: ${{secrets.STORMGLASS_API_URL}}
+  STORMGLASS_API_TOKEN: ${{secrets.STORMGLASS_API_TOKEN}}
+
 jobs:
   build:
     runs-on: ubuntu-latest
