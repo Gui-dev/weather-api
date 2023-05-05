@@ -20,8 +20,10 @@ export class AuthService {
   }
 
   public static generateToken (payload: Record<string, string>): string {
-    const token = jwt.sign(payload, process.env.AUTH_SECRET_WORD as string, {
-      expiresIn: process.env.AUTH_EXPIRES_IN as string
+    const secret = process.env.AUTH_SECRET_WORD as string
+    const expiresIn = process.env.AUTH_EXPIRES_IN as string
+    const token = jwt.sign(payload, secret, {
+      expiresIn
     })
     return token
   }
