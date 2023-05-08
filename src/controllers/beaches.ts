@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 
 import { Beach } from '@src/models/beaches-model'
 import { authMiddleware } from '@src/middlewares/auth'
+import logger from '@src/config/logger'
 
 @Controller('beaches')
 @ClassMiddleware(authMiddleware)
@@ -21,6 +22,7 @@ export class BeachesController {
           error: error.message
         })
       } else {
+        logger.error(err)
         return response.status(500).send({
           error: 'Internal Server Error'
         })

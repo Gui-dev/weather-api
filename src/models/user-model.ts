@@ -1,6 +1,7 @@
 import { type Document, type Model, Schema, model, models } from 'mongoose'
 
 import { AuthService } from '@src/services/auth-service'
+import logger from '@src/config/logger'
 
 export interface IUser {
   _id?: string
@@ -42,8 +43,12 @@ schema.pre('save', async function (): Promise<void> {
   if (!this.password || !this.isModified('password')) {
     return
   }
-  const hashedPassword = await AuthService.hashPassword(this.password)
-  this.password = hashedPassword
+  try {
+    const hashedPassword = await AuthService.hashPassword(this.password)
+    this.password = hashedPassword
+  } catch (error) {
+    logger.error('Error hashing the password', error)
+  }
 })
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

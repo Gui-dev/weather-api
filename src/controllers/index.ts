@@ -2,6 +2,7 @@ import { type Response } from 'express'
 import mongoose from 'mongoose'
 
 import { CUSTOM_VALIDATION } from '@src/models/user-model'
+import logger from '@src/config/logger'
 
 interface IHandleClientErrorsResponse {
   code: number
@@ -20,6 +21,7 @@ export abstract class BaseController {
         error: clientError.error
       })
     } else {
+      logger.error(error)
       response.status(500).send({
         code: 500,
         error: 'Something went wrong'

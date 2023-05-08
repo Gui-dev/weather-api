@@ -6,6 +6,7 @@ import * as database from './shared/database/database'
 import { ForecastController } from './controllers/forecast'
 import { BeachesController } from './controllers/beaches'
 import { UsersController } from './controllers/users'
+import logger from './config/logger'
 dotenv.config()
 
 export class SetupServer extends Server {
@@ -29,7 +30,7 @@ export class SetupServer extends Server {
 
   public start (): void {
     this.app.listen(this.port, () => {
-      console.info(`Server listening on port: ${this.port}`)
+      logger.info(`Server listening on port: ${this.port}`)
     })
   }
 
