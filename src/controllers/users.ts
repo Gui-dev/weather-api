@@ -21,19 +21,19 @@ export class UsersController extends BaseController {
   }
 
   @Post('authenticate')
-  public async authenticate (request: Request, response: Response): Promise<Response | any> {
+  public async authenticate (request: Request, response: Response): Promise<Response> {
     const { email, password } = request.body
     const user = await User.findOne({ email })
     if (!user) {
-      return response.status(401).send({
+      return this.sendErrorResponse(response, {
         code: 401,
-        error: 'User or password is invalid'
+        message: 'User or password is invalid'
       })
     }
     if (!(await AuthService.comparePassword(password, user.password))) {
-      return response.status(401).send({
+      return this.sendErrorResponse(response, {
         code: 401,
-        error: 'User or password is invalid'
+        message: 'User or password is invalid'
       })
     }
     const token = AuthService.generateToken(user.toJSON())

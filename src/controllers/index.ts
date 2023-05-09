@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 
 import { CUSTOM_VALIDATION } from '@src/models/user-model'
 import logger from '@src/config/logger'
+import { APIError, type IAPIError } from '@src/errors/api-errors'
 
 interface IHandleClientErrorsResponse {
   code: number
@@ -16,17 +17,21 @@ export abstract class BaseController {
   ): void {
     if (error instanceof mongoose.Error.ValidationError) {
       const clientError = this.handleClientErrors(error)
-      response.status(clientError.code).send({
+      response.status(clientError.code).send(APIError.format({
         code: clientError.code,
-        error: clientError.error
-      })
+        message: clientError.error
+      }))
     } else {
       logger.error(error)
-      response.status(500).send({
+      response.status(500).send(APIError.format({
         code: 500,
-        error: 'Something went wrong'
-      })
+        message: 'Something went wrong'
+      }))
     }
+  }
+
+  protected sendErrorResponse (response: Response, apiError: IAPIError): Response {
+    return response.status(apiError.code).send(APIError.format(apiError))
   }
 
   private handleClientErrors (error: mongoose.Error.ValidationError): IHandleClientErrorsResponse {
