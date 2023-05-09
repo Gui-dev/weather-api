@@ -1,8 +1,8 @@
 import pino from 'pino'
 
 export default pino({
-  enabled: process.env.ENABLED,
-  level: process.env.LEVEL,
+  enabled: process.env.LOGGER_ENABLED,
+  level: process.env.LOGGER_LEVEL,
   transport: {
     target: 'pino-pretty',
     options: {

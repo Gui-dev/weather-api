@@ -7,7 +7,7 @@ declare namespace NodeJS {
     AUTH_EXPIRES_IN: string
     STORMGLASS_API_URL: string
     STORMGLASS_API_TOKEN: string
-    ENABLED: boolean
-    LEVEL: string
+    LOGGER_ENABLED: boolean
+    LOGGER_LEVEL: string
   }
 }
