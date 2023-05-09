@@ -1,4 +1,7 @@
 import pino from 'pino'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export default pino({
   enabled: process.env.LOGGER_ENABLED,
