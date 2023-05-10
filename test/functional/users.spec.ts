@@ -116,5 +116,20 @@ describe('#Users functional tests', () => {
       expect(status).toBe(200)
       expect(body).toMatchObject(JSON.parse(JSON.stringify({ user })))
     })
+
+    it('should return Not Found, when the user is not found', async () => {
+      const newUser = {
+        name: 'Bruce Wayne',
+        email: 'bruce@email.com',
+        password: '123456'
+      }
+      const user = new User(newUser)
+      const token = AuthService.generateToken(user.toJSON())
+      const { status } = await global.testRequest
+        .get('/users/me')
+        .set({ 'x-access-token': token })
+
+      expect(status).toBe(404)
+    })
   })
 })
