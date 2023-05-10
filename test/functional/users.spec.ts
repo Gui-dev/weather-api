@@ -99,4 +99,22 @@ describe('#Users functional tests', () => {
       expect(response.status).toBe(401)
     })
   })
+
+  describe('When getting user profile info', () => {
+    it("should return the token's owner profile information", async () => {
+      const newUser = {
+        name: 'Bruce Wayne',
+        email: 'bruce@email.com',
+        password: '123456'
+      }
+      const user = await new User(newUser).save()
+      const token = AuthService.generateToken(user.toJSON())
+      const { body, status } = await global.testRequest
+        .get('/users/me')
+        .set({ 'x-access-token': token })
+
+      expect(status).toBe(200)
+      expect(body).toMatchObject(JSON.parse(JSON.stringify({ user })))
+    })
+  })
 })
