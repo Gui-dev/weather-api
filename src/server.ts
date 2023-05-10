@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv'
 import { Server } from '@overnightjs/core'
 import express, { type Application } from 'express'
+import expressPino from 'express-pino-logger'
+import cors from 'cors'
 
 import * as database from './shared/database/database'
 import { ForecastController } from './controllers/forecast'
@@ -40,6 +42,8 @@ export class SetupServer extends Server {
 
   private setupExpress (): void {
     this.app.use(express.json())
+    this.app.use(cors())
+    this.app.use(expressPino({ logger }))
   }
 
   private setupControllers (): void {
