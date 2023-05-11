@@ -28,10 +28,19 @@ describe('#Rating Service', () => {
     it('should get rating 3 for a beach with cross winds', async () => {
       const rating = await fakeRating.getRatingBasedOnWindAndWavePosition(
         BeachPosition.E,
-        BeachPosition.W
+        BeachPosition.S
       )
 
       expect(rating).toBe(3)
+    })
+
+    it('should get rating 5 for a beach with offshore winds', async () => {
+      const rating = await fakeRating.getRatingBasedOnWindAndWavePosition(
+        BeachPosition.E,
+        BeachPosition.W
+      )
+
+      expect(rating).toBe(5)
     })
   })
 })
