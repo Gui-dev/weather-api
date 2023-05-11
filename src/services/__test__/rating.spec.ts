@@ -71,5 +71,10 @@ describe('#Rating Service', () => {
       const rating = await fakeRating.getRatingForSwellSize(0.2)
       expect(rating).toBe(1)
     })
+
+    it('should get rating 2 for less than ankle to knee swell', async () => {
+      const rating = await fakeRating.getRatingForSwellSize(0.6)
+      expect(rating).toBe(2)
+    })
   })
 })
