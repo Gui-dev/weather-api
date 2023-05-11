@@ -93,5 +93,10 @@ describe('#Rating Service', () => {
       const response = await fakeRating.getPositionFromLocation(92)
       expect(response).toBe(BeachPosition.E)
     })
+
+    it('should get the ponit based on a north location 1', async () => {
+      const response = await fakeRating.getPositionFromLocation(360)
+      expect(response).toBe(BeachPosition.N)
+    })
   })
 })
