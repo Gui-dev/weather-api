@@ -81,5 +81,10 @@ describe('#Rating Service', () => {
       const rating = await fakeRating.getRatingForSwellSize(1.5)
       expect(rating).toBe(3)
     })
+
+    it('should get rating 5 for overhead swell', async () => {
+      const rating = await fakeRating.getRatingForSwellSize(2.5)
+      expect(rating).toBe(5)
+    })
   })
 })
