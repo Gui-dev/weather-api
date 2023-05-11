@@ -59,5 +59,10 @@ describe('#Rating Service', () => {
       const rating = await fakeRating.getRatingForSwellPeriod(12)
       expect(rating).toBe(4)
     })
+
+    it('should get a rating of 5 for a period of 16 seconds', async () => {
+      const rating = await fakeRating.getRatingForSwellPeriod(16)
+      expect(rating).toBe(5)
+    })
   })
 })
