@@ -1,6 +1,21 @@
 import { type IBeach, BeachPosition } from '@src/models/beaches-model'
 
 export class RatingService {
+  private readonly waveHeights = {
+    ankleToKnee: {
+      min: 0.3,
+      max: 1.0
+    },
+    waistHigh: {
+      min: 1.0,
+      max: 2.0
+    },
+    headHigh: {
+      min: 2.0,
+      max: 2.5
+    }
+  }
+
   constructor(private readonly beach: IBeach) { }
 
   public async getRatingBasedOnWindAndWavePosition (wavePosition: BeachPosition, windPosition: BeachPosition): Promise<number> {
@@ -23,6 +38,20 @@ export class RatingService {
     if (period >= 14) {
       return 5
     }
+    return 1
+  }
+
+  public async getRatingForSwellSize (height: number): Promise<number> {
+    if (height >= this.waveHeights.ankleToKnee.min && height < this.waveHeights.ankleToKnee.max) {
+      return 2
+    }
+    if (height >= this.waveHeights.waistHigh.min && height < this.waveHeights.waistHigh.max) {
+      return 3
+    }
+    if (height >= this.waveHeights.headHigh.min) {
+      return 5
+    }
+
     return 1
   }
 
