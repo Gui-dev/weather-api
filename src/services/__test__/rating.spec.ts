@@ -40,6 +40,13 @@ describe('#Rating Service', () => {
       const rating = await fakeRating.getRateForPoint(point)
       expect(rating).toBe(3)
     })
+
+    it('should get a rating of 4 for a point with offshare winds, half overhead high swell and good interval', async () => {
+      const pointData = { swellHeight: 0.7, swellPeriod: 12, windDirection: 250 }
+      const point = Object.assign(fakePoint, pointData)
+      const rating = await fakeRating.getRateForPoint(point)
+      expect(rating).toBe(4)
+    })
   })
 
   describe('#Get rating based on wind and wave position', () => {
