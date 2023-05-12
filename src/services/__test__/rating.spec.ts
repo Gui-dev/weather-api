@@ -12,7 +12,20 @@ describe('#Rating Service', () => {
   const fakeRating = new RatingService(fakeBeach)
 
   describe('#Calculate rating for a given point', () => {
-
+    const fakePoint = {
+      swellDirection: 110,
+      swellHeight: 0.1,
+      swellPeriod: 5,
+      time: 'test',
+      waveDirection: 110,
+      waveHeight: 0.1,
+      windDirection: 100,
+      windSpeed: 100
+    }
+    it('should get a rating less than 1 for a poor point', async () => {
+      const rating = await fakeRating.getRateForPoint(fakePoint)
+      expect(rating).toBe(1)
+    })
   })
 
   describe('#Get rating based on wind and wave position', () => {
