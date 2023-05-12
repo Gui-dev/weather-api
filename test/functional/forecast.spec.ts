@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import nock from 'nock'
 
-import { Beach, BeachPosition } from '@src/models/beaches-model'
+import { Beach, GeoPosition } from '@src/models/beaches-model'
 import stormGlassWeather3HoursFixture from '@test/fixtures/stormglass-weather-3-hours.json'
 import apiForecastResponse1BeachFixture from '@test/fixtures/api-forecast-response-1-beach.json'
 import { User } from '@src/models/user-model'
@@ -22,7 +22,7 @@ describe('#Beach forecast fuctional tests', () => {
 
     const defaultBeach = {
       name: 'Manly',
-      position: BeachPosition.E,
+      position: GeoPosition.E,
       latitude: -33.792726,
       longitude: 151.289824,
       user: user.id

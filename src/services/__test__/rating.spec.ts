@@ -1,10 +1,10 @@
-import { BeachPosition, type IBeach } from '@src/models/beaches-model'
+import { GeoPosition, type IBeach } from '@src/models/beaches-model'
 import { RatingService } from '../rating-service'
 
 describe('#Rating Service', () => {
   const fakeBeach: IBeach = {
     name: '',
-    position: BeachPosition.E,
+    position: GeoPosition.E,
     latitude: -33.792726,
     longitude: 151.289824,
     user: 'fake_user_id'
@@ -73,8 +73,8 @@ describe('#Rating Service', () => {
   describe('#Get rating based on wind and wave position', () => {
     it('should get rating 1 for a beach with onshore winds', async () => {
       const rating = await fakeRating.getRatingBasedOnWindAndWavePosition(
-        BeachPosition.E,
-        BeachPosition.E
+        GeoPosition.E,
+        GeoPosition.E
       )
 
       expect(rating).toBe(1)
@@ -82,8 +82,8 @@ describe('#Rating Service', () => {
 
     it('should get rating 3 for a beach with cross winds', async () => {
       const rating = await fakeRating.getRatingBasedOnWindAndWavePosition(
-        BeachPosition.E,
-        BeachPosition.S
+        GeoPosition.E,
+        GeoPosition.S
       )
 
       expect(rating).toBe(3)
@@ -91,8 +91,8 @@ describe('#Rating Service', () => {
 
     it('should get rating 5 for a beach with offshore winds', async () => {
       const rating = await fakeRating.getRatingBasedOnWindAndWavePosition(
-        BeachPosition.E,
-        BeachPosition.W
+        GeoPosition.E,
+        GeoPosition.W
       )
 
       expect(rating).toBe(5)
@@ -146,27 +146,27 @@ describe('#Rating Service', () => {
   describe('#Get position based on points location', () => {
     it('should get the ponit based on east location', async () => {
       const response = await fakeRating.getPositionFromLocation(92)
-      expect(response).toBe(BeachPosition.E)
+      expect(response).toBe(GeoPosition.E)
     })
 
     it('should get the ponit based on a north location 1', async () => {
       const response = await fakeRating.getPositionFromLocation(360)
-      expect(response).toBe(BeachPosition.N)
+      expect(response).toBe(GeoPosition.N)
     })
 
     it('should get the ponit based on a north location 2', async () => {
       const response = await fakeRating.getPositionFromLocation(40)
-      expect(response).toBe(BeachPosition.N)
+      expect(response).toBe(GeoPosition.N)
     })
 
     it('should get the ponit based on a south location', async () => {
       const response = await fakeRating.getPositionFromLocation(200)
-      expect(response).toBe(BeachPosition.S)
+      expect(response).toBe(GeoPosition.S)
     })
 
     it('should get the ponit based on a west location', async () => {
       const response = await fakeRating.getPositionFromLocation(300)
-      expect(response).toBe(BeachPosition.W)
+      expect(response).toBe(GeoPosition.W)
     })
   })
 })

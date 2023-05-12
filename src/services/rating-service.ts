@@ -1,5 +1,5 @@
 import { type IForecastPoint } from '@src/clients/storm-glass'
-import { type IBeach, BeachPosition } from '@src/models/beaches-model'
+import { type IBeach, GeoPosition } from '@src/models/beaches-model'
 
 export class RatingService {
   private readonly waveHeights = {
@@ -32,7 +32,7 @@ export class RatingService {
     return finalRating
   }
 
-  public async getRatingBasedOnWindAndWavePosition (wavePosition: BeachPosition, windPosition: BeachPosition): Promise<number> {
+  public async getRatingBasedOnWindAndWavePosition (wavePosition: GeoPosition, windPosition: GeoPosition): Promise<number> {
     if (wavePosition === windPosition) {
       return 1
     } else if (this.isWindOffShore(wavePosition, windPosition)) {
@@ -69,44 +69,44 @@ export class RatingService {
     return 1
   }
 
-  public async getPositionFromLocation (coordinates: number): Promise<BeachPosition> {
+  public async getPositionFromLocation (coordinates: number): Promise<GeoPosition> {
     if (coordinates >= 310 || (coordinates < 50 && coordinates >= 0)) {
-      return BeachPosition.N
+      return GeoPosition.N
     }
     if (coordinates >= 50 && coordinates < 120) {
-      return BeachPosition.E
+      return GeoPosition.E
     }
     if (coordinates >= 120 && coordinates < 220) {
-      return BeachPosition.S
+      return GeoPosition.S
     }
     if (coordinates >= 220 && coordinates < 310) {
-      return BeachPosition.W
+      return GeoPosition.W
     }
 
-    return BeachPosition.E
+    return GeoPosition.E
   }
 
-  private isWindOffShore (wavePosition: BeachPosition, windPosition: BeachPosition): boolean {
+  private isWindOffShore (wavePosition: GeoPosition, windPosition: GeoPosition): boolean {
     return (
       (
-        wavePosition === BeachPosition.N &&
-        windPosition === BeachPosition.S &&
-        this.beach.position === BeachPosition.N
+        wavePosition === GeoPosition.N &&
+        windPosition === GeoPosition.S &&
+        this.beach.position === GeoPosition.N
       ) ||
       (
-        wavePosition === BeachPosition.S &&
-        windPosition === BeachPosition.N &&
-        this.beach.position === BeachPosition.S
+        wavePosition === GeoPosition.S &&
+        windPosition === GeoPosition.N &&
+        this.beach.position === GeoPosition.S
       ) ||
       (
-        wavePosition === BeachPosition.E &&
-        windPosition === BeachPosition.W &&
-        this.beach.position === BeachPosition.E
+        wavePosition === GeoPosition.E &&
+        windPosition === GeoPosition.W &&
+        this.beach.position === GeoPosition.E
       ) ||
       (
-        wavePosition === BeachPosition.W &&
-        windPosition === BeachPosition.E &&
-        this.beach.position === BeachPosition.W
+        wavePosition === GeoPosition.W &&
+        windPosition === GeoPosition.E &&
+        this.beach.position === GeoPosition.W
       )
     )
   }
