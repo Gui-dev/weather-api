@@ -1,3 +1,4 @@
+import { type IForecastPoint } from '@src/clients/storm-glass'
 import { type IBeach, BeachPosition } from '@src/models/beaches-model'
 
 export class RatingService {
@@ -17,6 +18,19 @@ export class RatingService {
   }
 
   constructor(private readonly beach: IBeach) { }
+
+  public async getRateForPoint (point: IForecastPoint): Promise<number> {
+    const swellDirection = await this.getPositionFromLocation(point.swellDirection)
+    const windDirection = await this.getPositionFromLocation(point.windDirection)
+    const windAndWaverating = await this.getRatingBasedOnWindAndWavePosition(
+      swellDirection,
+      windDirection
+    )
+    const swellHeightRating = await this.getRatingForSwellSize(point.swellHeight)
+    const swellPeriodRating = await this.getRatingForSwellPeriod(point.swellPeriod)
+    const finalRating = Math.round((windAndWaverating + swellHeightRating + swellPeriodRating) / 3)
+    return finalRating
+  }
 
   public async getRatingBasedOnWindAndWavePosition (wavePosition: BeachPosition, windPosition: BeachPosition): Promise<number> {
     if (wavePosition === windPosition) {
