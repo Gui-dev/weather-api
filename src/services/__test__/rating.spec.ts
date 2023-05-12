@@ -61,6 +61,13 @@ describe('#Rating Service', () => {
       const rating = await fakeRating.getRateForPoint(point)
       expect(rating).toBe(5)
     })
+
+    it('should get a rating of 4 a good condition but with cross shore winds', async () => {
+      const pointData = { swellHeight: 2.5, swellPeriod: 16, windDirection: 130 }
+      const point = Object.assign(fakePoint, pointData)
+      const rating = await fakeRating.getRateForPoint(point)
+      expect(rating).toBe(4)
+    })
   })
 
   describe('#Get rating based on wind and wave position', () => {
