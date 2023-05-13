@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import { type IForecastPoint, StormGlass } from '@src/clients/storm-glass'
 import { ForecastProcessingInternalError } from '@src/errors/forecast-processing-internal-error'
 import { type IBeach } from '@src/models/beaches-model'
@@ -17,21 +19,32 @@ export class ForecastService {
   ) { }
 
   public async processForecastForBeaches (beaches: IBeach[]): Promise<ITimeForecast[]> {
-    const pointsWithCorrectSources: IBeachForecast[] = []
-    logger.info(`Preparing the forecast for ${beaches.length} beaches`)
     try {
-      for (const beach of beaches) {
-        const rating = new this.Rating(beach)
-        const points = await this.stormGlass.fetchPoints(beach.latitude, beach.longitude)
-        const enrichedBeachData = this.enrichedBeachData(points, beach, rating)
-        pointsWithCorrectSources.push(...enrichedBeachData)
-      }
-      return this.mapForecastByTime(pointsWithCorrectSources)
+      const beachForecast = await this.calculateRating(beaches)
+      const timeForecast = this.mapForecastByTime(beachForecast)
+      return timeForecast.map(time_forecast => {
+        return {
+          time: time_forecast.time,
+          forecast: _.orderBy(time_forecast.forecast, ['rating'], ['desc'])
+        }
+      })
     } catch (err) {
       const error = err as Error
       logger.error(error)
       throw new ForecastProcessingInternalError(error.message)
     }
+  }
+
+  private async calculateRating (beaches: IBeach[]): Promise<IBeachForecast[]> {
+    const pointsWithCorrectSources: IBeachForecast[] = []
+    logger.info(`Preparing the forecast for ${beaches.length} beaches`)
+    for (const beach of beaches) {
+      const rating = new this.Rating(beach)
+      const points = await this.stormGlass.fetchPoints(beach.latitude, beach.longitude)
+      const enrichedBeachData = this.enrichedBeachData(points, beach, rating)
+      pointsWithCorrectSources.push(...enrichedBeachData)
+    }
+    return pointsWithCorrectSources
   }
 
   private enrichedBeachData (points: IForecastPoint[], beach: IBeach, rating: RatingService): IBeachForecast[] {
