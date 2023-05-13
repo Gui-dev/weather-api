@@ -19,20 +19,20 @@ export class RatingService {
 
   constructor(private readonly beach: IBeach) { }
 
-  public async getRateForPoint (point: IForecastPoint): Promise<number> {
-    const swellDirection = await this.getPositionFromLocation(point.swellDirection)
-    const windDirection = await this.getPositionFromLocation(point.windDirection)
-    const windAndWaverating = await this.getRatingBasedOnWindAndWavePosition(
+  public getRateForPoint (point: IForecastPoint): number {
+    const swellDirection = this.getPositionFromLocation(point.swellDirection)
+    const windDirection = this.getPositionFromLocation(point.windDirection)
+    const windAndWaverating = this.getRatingBasedOnWindAndWavePosition(
       swellDirection,
       windDirection
     )
-    const swellHeightRating = await this.getRatingForSwellSize(point.swellHeight)
-    const swellPeriodRating = await this.getRatingForSwellPeriod(point.swellPeriod)
+    const swellHeightRating = this.getRatingForSwellSize(point.swellHeight)
+    const swellPeriodRating = this.getRatingForSwellPeriod(point.swellPeriod)
     const finalRating = Math.round((windAndWaverating + swellHeightRating + swellPeriodRating) / 3)
     return finalRating
   }
 
-  public async getRatingBasedOnWindAndWavePosition (wavePosition: GeoPosition, windPosition: GeoPosition): Promise<number> {
+  public getRatingBasedOnWindAndWavePosition (wavePosition: GeoPosition, windPosition: GeoPosition): number {
     if (wavePosition === windPosition) {
       return 1
     } else if (this.isWindOffShore(wavePosition, windPosition)) {
@@ -42,7 +42,7 @@ export class RatingService {
     return 3
   }
 
-  public async getRatingForSwellPeriod (period: number): Promise<number> {
+  public getRatingForSwellPeriod (period: number): number {
     if (period >= 7 && period < 10) {
       return 2
     }
@@ -55,7 +55,7 @@ export class RatingService {
     return 1
   }
 
-  public async getRatingForSwellSize (height: number): Promise<number> {
+  public getRatingForSwellSize (height: number): number {
     if (height >= this.waveHeights.ankleToKnee.min && height < this.waveHeights.ankleToKnee.max) {
       return 2
     }
@@ -69,7 +69,7 @@ export class RatingService {
     return 1
   }
 
-  public async getPositionFromLocation (coordinates: number): Promise<GeoPosition> {
+  public getPositionFromLocation (coordinates: number): GeoPosition {
     if (coordinates >= 310 || (coordinates < 50 && coordinates >= 0)) {
       return GeoPosition.N
     }
