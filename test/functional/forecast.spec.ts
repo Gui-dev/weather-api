@@ -44,7 +44,8 @@ describe('#Beach forecast fuctional tests', () => {
         params: /(.*)/,
         source: 'noaa',
         lat: '-33.792726',
-        lng: '151.289824'
+        lng: '151.289824',
+        end: /(.*)/
       })
       .reply(200, stormGlassWeather3HoursFixture)
     const { body, status } = await global.testRequest
