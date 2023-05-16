@@ -13,6 +13,7 @@ import { ForecastController } from './controllers/forecast'
 import { BeachesController } from './controllers/beaches'
 import { UsersController } from './controllers/users'
 import logger from './config/logger'
+import { apiErrorValidator } from './middlewares/api-error-validator'
 dotenv.config()
 
 export class SetupServer extends Server {
@@ -25,6 +26,7 @@ export class SetupServer extends Server {
     await this.docSetup()
     this.setupControllers()
     await this.databaseSetup()
+    this.setupErrorHandles()
   }
 
   public getApp (): Application {
@@ -58,6 +60,10 @@ export class SetupServer extends Server {
     this.app.use(express.json())
     this.app.use(cors())
     this.app.use(expressPino({ logger }))
+  }
+
+  private setupErrorHandles (): void {
+    this.app.use(apiErrorValidator)
   }
 
   private setupControllers (): void {
