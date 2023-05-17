@@ -9,7 +9,9 @@
     "dev": "tsx watch -r tsconfig-paths/register 'src/server.ts'",
     "test:functional": "jest --projects './test' --runInBand",
     "test:unit": "jest",
-    "test": "npm run test:unit && npm run test:functional",
+    "test": "npm run lint && npm run test:unit && npm run test:functional",
+    "lint": "eslint './src' './test' --ext .ts",
+    "lint:fix": "eslint './src' './test' --ext .ts --fix",
     "build": "tsc --build"
   },
   "keywords": [],
