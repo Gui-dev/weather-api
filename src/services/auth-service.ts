@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
-import { type IUser } from '@src/models/user-model'
 
-export interface IDecodedUser extends Omit<IUser, '_id'> {
-  id: string
+export interface IJwtToken {
+  sub: string
 }
+
 dotenv.config()
 
 export class AuthService {
@@ -19,17 +19,17 @@ export class AuthService {
     return isValidPassword
   }
 
-  public static generateToken (payload: Record<string, string>): string {
+  public static generateToken (sub: string): string {
     const secret = process.env.AUTH_SECRET_WORD
     const expiresIn = process.env.AUTH_EXPIRES_IN
-    const token = jwt.sign(payload, secret, {
+    const token = jwt.sign({ sub }, secret, {
       expiresIn
     })
     return token
   }
 
-  public static decodeToken (token: string): IDecodedUser {
+  public static decodeToken (token: string): IJwtToken {
     const secret: string = process.env.AUTH_SECRET_WORD
-    return jwt.verify(token, secret) as IDecodedUser
+    return jwt.verify(token, secret) as IJwtToken
   }
 }

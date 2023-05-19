@@ -6,7 +6,7 @@ import { type IBeach } from '@src/models/beaches-model'
 import logger from '@src/config/logger'
 import { RatingService } from './rating-service'
 
-export interface IBeachForecast extends Omit<IBeach, 'user'>, IForecastPoint { }
+export interface IBeachForecast extends Omit<IBeach, 'id' | 'userId'>, IForecastPoint { }
 export interface ITimeForecast {
   time: string
   forecast: IBeachForecast[]

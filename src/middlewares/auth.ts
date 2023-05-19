@@ -4,8 +4,8 @@ import { type Response, type Request, type NextFunction } from 'express'
 export const authMiddleware = (request: Partial<Request>, response: Partial<Response>, next: NextFunction): void => {
   try {
     const token = request.headers?.['x-access-token']
-    const decoded = AuthService.decodeToken(token as string)
-    request.decoded = decoded
+    const claims = AuthService.decodeToken(token as string)
+    request.decoded = { userId: claims.sub }
     next()
   } catch (err) {
     const error = err as Error

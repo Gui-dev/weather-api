@@ -12,7 +12,7 @@ export interface IBeach {
   position: GeoPosition
   latitude: number
   longitude: number
-  user: string
+  userId: string
 }
 
 const schema = new Schema({
@@ -20,7 +20,7 @@ const schema = new Schema({
   position: { type: String, required: true },
   latitude: { type: Number, required: true },
   longitude: { type: Number, required: true },
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 }, {
   toJSON: {
     transform: (_, ret): void => {

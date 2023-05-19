@@ -16,7 +16,7 @@ export class ForecastController extends BaseController {
     try {
       const forecast = new ForecastService()
       const beaches = await Beach.find({
-        user: request.decoded?.id
+        userId: request.decoded?.userId
       })
       const forecastData = await forecast.processForecastForBeaches(beaches)
       response.status(200).send(forecastData)

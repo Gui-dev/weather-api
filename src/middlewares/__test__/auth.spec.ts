@@ -5,7 +5,7 @@ import { authMiddleware } from '../auth'
 
 describe('#AuthMiddleware', () => {
   it('should verify a JWT and call the next middleware', async () => {
-    const jwt = AuthService.generateToken({ data: 'fake-data' })
+    const jwt = AuthService.generateToken('fake_user_id')
     const requestFake: Partial<Request> = {
       headers: {
         'x-access-token': jwt

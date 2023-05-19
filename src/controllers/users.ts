@@ -37,16 +37,16 @@ export class UsersController extends BaseController {
         message: 'User or password is invalid'
       })
     }
-    const token = AuthService.generateToken(user.toJSON())
+    const token = AuthService.generateToken(user.id)
 
-    return response.status(200).send({ token })
+    return response.status(200).send({ ...user.toJSON(), ...{ token } })
   }
 
   @Get('me')
   @Middleware(authMiddleware)
   public async me (request: Request, response: Response): Promise<Response> {
-    const email = request.decoded?.email
-    const user = await User.findOne({ email })
+    const userId = request.decoded?.userId
+    const user = await User.findOne({ _id: userId })
     if (!user) {
       return this.sendErrorResponse(response, {
         code: 404,

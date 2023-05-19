@@ -18,14 +18,14 @@ describe('#Beach forecast fuctional tests', () => {
     await Beach.deleteMany({})
     await User.deleteMany({})
     const user = await new User(fakeUser).save()
-    token = AuthService.generateToken(user.toJSON())
+    token = AuthService.generateToken(user.id)
 
     const defaultBeach = {
       name: 'Manly',
       position: GeoPosition.E,
       latitude: -33.792726,
       longitude: 151.289824,
-      user: user.id
+      userId: user.id
     }
     const beach = new Beach(defaultBeach)
     await beach.save()

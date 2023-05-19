@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Beach } from '@src/models/beaches-model'
 import { User } from '@src/models/user-model'
 import { AuthService } from '@src/services/auth-service'
@@ -14,7 +13,7 @@ describe('#Beaches functional tests', () => {
     await Beach.deleteMany({})
     await User.deleteMany({})
     const user = await new User(fakeUser).save()
-    token = AuthService.generateToken(user.toJSON())
+    token = AuthService.generateToken(user.id)
   })
 
   describe('#When creating a beach', () => {
